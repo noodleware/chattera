@@ -1,0 +1,35 @@
+{
+    "name": "noodleware/chattera",
+    "description": "Chattera is a Laravel package that seamlessly integrates a real-time chatbot widget into your application using Livewire.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Noodleware\\Chattera\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.2",
+        "ext-json": "*",
+        "illuminate/support": "^11.0|^12.0",
+        "illuminate/console": "^11.0|^12.0",
+        "illuminate/mail": "^11.0|^12.0",
+        "livewire/livewire": "^3.4",
+        "ezyang/htmlpurifier": "^4.17",
+        "barryvdh/laravel-dompdf": "^2.0|^3.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Noodleware\\Chattera\\ChatteraServiceProvider"
+            ]
+        }
+    },
+    "require-dev": {
+        "laravel/pint": "^1.21"
+    }
+}
