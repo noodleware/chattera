@@ -116,15 +116,18 @@ class Chat extends Model
         );
 
         // Build the payload
-        $payload = $messages->take(6)->reverse()->map(function ($message) {
-            return [
-                'role' => $message->role,
-                'content' => $message->content,
-            ];
-        });
+        $payload = $messages->take(6)
+            ->reverse()->map(function ($message) {
+                return [
+                    'role' => $message->role,
+                    'content' => $message->content,
+                ];
+            })
+            ->values()
+            ->toArray();
 
         // Call the OpenAI service to generate a response.
-        $data = app(OpenAIService::class)->responses("Rules: \n$rules. \n \nContext: \n$context.", $payload->toArray());
+        $data = app(OpenAIService::class)->responses("Rules: \n$rules. \n \nContext: \n$context.", $payload);
 
         // Save and return the assistant's generated message.
         return $this->addMessage(
