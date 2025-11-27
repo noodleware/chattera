@@ -51,23 +51,19 @@ class SendChatteraReport extends Command
                         'You will return the statements in a raw JSON format without any code block or markdown formatting.',
                     ]);
 
-                    $payload = collect([
-                        ['role' => 'system', 'content' => "Rules: \n$rules."],
-                    ])->merge(
-                        $chat->messages->map(function ($message) {
-                            return [
-                                'role' => $message->role,
-                                'content' => $message->content,
-                            ];
-                        })
-                    );
+                    $payload = $chat->messages->map(function ($message) {
+                        return [
+                            'role' => $message->role,
+                            'content' => $message->content,
+                        ];
+                    });
 
                     // Call the OpenAI service to generate a response.
-                    $data = app(OpenAIService::class)->chat($payload->toArray());
+                    $data = app(OpenAIService::class)->responses("Rules: \n$rules", $payload->toArray());
 
                     // store response
                     try {
-                        $object = json_decode($data['choices'][0]['message']['content']);
+                        $object = json_decode(extractAssistantText($data));
                         $chat->rating = $object->rating;
                         $chat->improvement = $object->improvement;
                         $chat->save();

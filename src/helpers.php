@@ -42,3 +42,32 @@ if (!function_exists('cosineSimilarity')) {
         return $dotProduct / ($uLength * $vLength);
     }
 }
+
+if (!function_exists('extractAssistantText')) {
+    function extractAssistantText(array $response): ?string
+    {
+        if (!isset($response['output']) || !is_array($response['output'])) {
+            return null;
+        }
+
+        foreach ($response['output'] as $item) {
+            // We only care about message items
+            if (($item['type'] ?? null) !== 'message') {
+                continue;
+            }
+
+            if (!isset($item['content']) || !is_array($item['content'])) {
+                continue;
+            }
+
+            // Message content is an array of blocks (text, images, etc)
+            foreach ($item['content'] as $block) {
+                if (($block['type'] ?? null) === 'output_text') {
+                    return $block['text'] ?? null;
+                }
+            }
+        }
+
+        return null;
+    }
+}

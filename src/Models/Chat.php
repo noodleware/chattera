@@ -115,26 +115,21 @@ class Chat extends Model
             $messages->where('role', 'user')->take(3)->implode('content', '. \n')
         );
 
-        // Build the payload: include system message with rules & context,
-        // then add the last 6 messages (reversed to chronological order).
-        $payload = collect([
-            ['role' => 'system', 'content' => "Rules: \n$rules. \n \nContext: \n$context."],
-        ])->merge(
-            $messages->take(6)->reverse()->map(function ($message) {
-                return [
-                    'role' => $message->role,
-                    'content' => $message->content,
-                ];
-            })
-        );
+        // Build the payload
+        $payload = $messages->take(6)->reverse()->map(function ($message) {
+            return [
+                'role' => $message->role,
+                'content' => $message->content,
+            ];
+        });
 
         // Call the OpenAI service to generate a response.
-        $data = app(OpenAIService::class)->chat($payload->toArray());
+        $data = app(OpenAIService::class)->responses("Rules: \n$rules. \n \nContext: \n$context.", $payload->toArray());
 
         // Save and return the assistant's generated message.
         return $this->addMessage(
             'assistant',
-            trim($data['choices'][0]['message']['content']),
+            trim(extractAssistantText($data)),
             $data['usage']['total_tokens']
         );
     }

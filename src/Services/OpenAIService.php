@@ -55,19 +55,19 @@ class OpenAIService
      *
      * @throws ConnectionException|RequestException
      */
-    public function chat(array $messages): array
+    public function responses(string $instructions, array|string $input): array
     {
         // Retrieve OpenAI configuration from the config file.
         $openaiConfig = config('chattera.openai');
 
         $payload = [
-            'model' => $openaiConfig['chat_model'] ?? 'gpt-4o-mini',
-            'messages' => $messages,
+            'model' => $openaiConfig['chat_model'] ?? 'gpt-5-nano',
+            'instructions' => $instructions,
+            'input' => $input,
             'temperature' => $openaiConfig['temperature'] ?? 0.7,
-            'frequency_penalty' => $openaiConfig['frequency_penalty'] ?? 0.5,
         ];
 
-        return $this->sendRequest('chat/completions', $payload, 2, 120);
+        return $this->sendRequest('responses', $payload, 2, 120);
     }
 
     /**
