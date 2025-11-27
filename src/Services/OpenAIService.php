@@ -64,7 +64,6 @@ class OpenAIService
             'model' => $openaiConfig['chat_model'] ?? 'gpt-5-nano',
             'instructions' => $instructions,
             'input' => $input,
-            'temperature' => $openaiConfig['temperature'] ?? 0.7,
         ];
 
         return $this->sendRequest('responses', $payload, 2, 120);

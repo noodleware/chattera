@@ -33,7 +33,6 @@ return [
         'access_key' => env('CHATTERA_OPEN_AI_TOKEN', ''),
         'chat_model' => 'gpt-5-nano',
         'embedding_model' => 'text-embedding-3-small',
-        'temperature' => 0.7,
     ],
 
     /*
