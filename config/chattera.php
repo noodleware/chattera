@@ -31,10 +31,9 @@ return [
     'openai' => [
         'base_url' => 'https://api.openai.com/v1/',
         'access_key' => env('CHATTERA_OPEN_AI_TOKEN', ''),
-        'chat_model' => 'gpt-4o-mini',
+        'chat_model' => 'gpt-5-nano',
         'embedding_model' => 'text-embedding-3-small',
         'temperature' => 0.7,
-        'frequency_penalty' => 0.5,
     ],
 
     /*

@@ -91,17 +91,8 @@ class AddChatteraContext extends Command
             'Return the statements as a raw JSON array (for example ["statement 1", "statement 2"]) with no code blocks or markdown formatting',
         ]);
 
-        $data = $this->openAIService->chat([
-            [
-                'role' => 'system',
-                'content' => "Rules: \n{$rules}.",
-            ],
-            [
-                'role' => 'user',
-                'content' => $text,
-            ],
-        ]);
+        $data = $this->openAIService->responses("Rules: \n$rules", $text);
 
-        return json_decode($data['choices'][0]['message']['content'], true);
+        return json_decode(extractAssistantText($data), true);
     }
 }
